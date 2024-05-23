@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>myFlix</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+  <body>
+    <div>
+        <p>The purpose of this API is to be the server-side component of a “movies” web application. The web
+            application will provide users with access to information about different
+            movies, directors, and genres. Users will be able to sign up, update their
+            personal information, and create a list of their favorite movies.
+            </p>
+    </div>
+    <table>
+      <tr>
+        <th>Business Logic</th>
+        <th>URL</th>
+        <th>HTTP Method</th>
+        <th>Query Parameters</th>
+        <th>Request Body Data Format</th>
+        <th>Response Body Data Format</th>
+      </tr>
+      <tr><!--Row 1-->
+        <td>Get the full list of movies</td>
+        <td>/movies</td>
+        <td>GET</td>
+        <td>movies</td>
+        <td>None</td>
+        <td>A JSON object holding data about all the movies</td>
+      </tr>
+      <tr><!--Row 2-->
+        <td>Get data about a single movie by name</td>
+        <td>/movies/[Name]</td>
+        <td>GET</td>
+        <td>movies, movie name</td>
+        <td>None</td>
+        <td>A JSON object holding data about a single movie, containing an description, genre, director, image URL, and whether it's featured or not</td>
+      </tr>
+      <tr><!--Row 3-->
+        <td>Get data about a genre by name</td>
+        <td>/genres/[Genre]</td>
+        <td>GET</td>
+        <td>genres, genre name</td>
+        <td>None</td>
+        <td>A JSON object holding data about the genre, containing a description</td>
+      </tr>
+      <tr><!--Row 4-->
+        <td>Get data about a director by name</td>
+        <td>/directors/[Director]</td>
+        <td>GET</td>
+        <td>directors, director name</td>
+        <td>None</td>
+        <td>A JSON object holding data about the genre, containing a bio, birth year, and death year</td>
+      </tr>
+      <tr><!--Row 5-->
+        <td>Allow new users to register</td>
+        <td>/users/[username]</td>
+        <td>POST</td>
+        <td>users, username</td>
+        <td>A JSON object holding data about the user, containing a username</td>
+        <td>A text message indicating that the user registered successfully</td>
+      </tr>
+      <tr><!--Row 6-->
+        <td>Allow users to update their user info</td>
+        <td>/users/[username]/info</td>
+        <td>PUT</td>
+        <td>users, username, info</td>
+        <td>A JSON object holding data about the user, containing a username</td>
+        <td>A text message indicating the username was updated</td>
+      </tr>
+      <tr><!--Row 7-->
+        <td>Allow users to add a movie to their list of favorites</td>
+        <td>/users/[username]/favorites</td>
+        <td>POST</td>
+        <td>users, username, favorites</td>
+        <td>A JSON object holding data about the user, containing a the movie they want to add to their favorites list</td>
+        <td>A text message indicating the movie was added to their favorites list successfully</td>
+      </tr>
+      <tr><!--Row 8-->
+        <td>Allow users to remove a movie from their list of favorites</td>
+        <td>/users/[username]/favorites/[movie_to_delete]</td>
+        <td>DELETE</td>
+        <td>users, username, favorites, movie to be deleted</td>
+        <td>A JSON object holding data about the user, containing a the movie they want to remove from their favorites list</td>
+        <td>A text message indicating the movie was removed from their favorites list successfully</td>
+      </tr>
+      <tr><!--Row 9-->
+        <td>Allow users to deregister</td>
+        <td>/users/[username]</td>
+        <td>DELETE</td>
+        <td>users, username</td>
+        <td>A JSON object holding data about the user, containing their username</td>
+        <td>A text message that the user deregistered successfully</td>
+      </tr>
+    </table>
+    <script
+    src="https://code.jquery.com/jquery-3.5.1.js"
+    integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script>
+    <script
+    src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+    integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+    crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
+    <script src="server.js"></script>
+  </body>
+</html>
