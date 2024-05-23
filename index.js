@@ -25,9 +25,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static('public'));
 app.use(morgan('common'));
-let auth = require('./auth')(app);
-const passport = require('passport');
-require('./passport');
+//let auth = require('./auth')(app);
+//const passport = require('passport');
+//require('./passport');
 
 mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
