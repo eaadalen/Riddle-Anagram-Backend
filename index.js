@@ -5,11 +5,11 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const Models = require('./models.js');
 const { check, validationResult } = require('express-validator');
-const Users = Models.User;
-const Words = Models.Word;
+const longPrompts = Models.longPrompt;
+const shortPrompts = Models.shortPrompt;
 const app = express();
 const cors = require('cors');
-let allowedOrigins = ['https://spelling-survival.netlify.app', 'http://localhost:1234', 'https://media.merriam-webster.com', 'https://eaadalen.github.io', "https://erikaadalen.com"];
+let allowedOrigins = ['http://localhost:1234'];
 const port = process.env.PORT || 8080;
 app.use(cors({
   origin: (origin, callback) => {
@@ -36,11 +36,11 @@ app.get('/', (req, res) => {
   res.send("Hello");
 });
 
-// Get full list of users
-app.get('/users', (req, res) => {
-  Users.find().sort( { "highScore": -1 } )
-      .then((users) => {
-        res.status(201).json(users);
+// Get full list of long prompts
+app.get('/longprompts', (req, res) => {
+  longPrompts.find()
+      .then((longPrompts) => {
+        res.status(201).json(longPrompts);
       })
       .catch((err) => {
         console.error(err);
@@ -48,11 +48,11 @@ app.get('/users', (req, res) => {
       });
 });
 
-// Get user info by username
-app.get('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOne({ "Username": req.params.username})
-      .then((response) => {
-        res.status(201).json(response);
+// Get full list of short prompts
+app.get('/shortprompts', (req, res) => {
+  shortPrompts.find()
+      .then((shortPrompts) => {
+        res.status(201).json(shortPrompts);
       })
       .catch((err) => {
         console.error(err);
@@ -60,30 +60,24 @@ app.get('/users/:username', passport.authenticate('jwt', { session: false }), (r
       });
 });
 
-// Create a new user
-app.post('/users',
-  [
-    check('Username', 'Username is required').isLength({min: 5}),
-    check('Password', 'Password is required').not().isEmpty(),
-  ], async (req, res) => {
+// Add a new long prompt
+app.post('/longprompt', async (req, res) => {
     let errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
-    let hashedPassword = Users.hashPassword(req.body.Password);
-    await Users.findOne({ Username: req.body.Username }) // Search to see if a user with the requested username already exists
-      .then((user) => {
-        if (user) {
-          //If the user is found, send a response that it already exists
-          return res.status(400).send(req.body.Username + ' already exists');
+    await longPrompts.findOne({ longPrompt: req.body.longPrompt }) // Search to see if the long prompt already exists in the database
+      .then((longPrompt) => {
+        if (longPrompt) {
+          //If the long prompt is found, send a response that it already exists
+          return res.status(400).send(req.body.longPrompt + ' already exists');
         } else {
-          Users
+          longPrompts
             .create({
-              Username: req.body.Username,
-              Password: hashedPassword,
-              highScore: req.body.highScore
+              longPrompt: req.body.longPrompt,
+              Answer: req.body.Answer
             })
-            .then((user) => { res.status(201).json(user) })
+            .then((longPrompt) => { res.status(201).json(longPrompt) })
             .catch((error) => {
               console.error(error);
               res.status(500).send('Error: ' + error);
@@ -96,78 +90,35 @@ app.post('/users',
       });
   });
 
-// Update high score
-app.put('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+// Add a new short prompt
+app.post('/shortprompt', async (req, res) => {
   let errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() });
   }
-  res.json(req.body);
-  await Users.findOneAndUpdate({ Username: req.params.Username }, { 
-    $set: { highScore: req.body.highScore} 
-  },
-  { new: true }) // This line makes sure that the updated document is returned
-  .then((updatedUser) => {
-    res.json(updatedUser);
-  })
-  .catch((err) => {
-    console.error(err);
-    res.status(500).send("Error: " + err);
-  })
+  await shortPrompts.findOne({ shortPrompt: req.body.shortPrompt }) // Search to see if the short prompt already exists in the database
+    .then((shortPrompt) => {
+      if (shortPrompt) {
+        //If the short prompt is found, send a response that it already exists
+        return res.status(400).send(req.body.shortPrompt + ' already exists');
+      } else {
+        shortPrompts
+          .create({
+            shortPrompt: req.body.shortPrompt,
+            Answer: req.body.Answer
+          })
+          .then((shortPrompt) => { res.status(201).json(shortPrompt) })
+          .catch((error) => {
+            console.error(error);
+            res.status(500).send('Error: ' + error);
+          });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
 });
-
-// Get full list of words
-app.get('/words', (req, res) => {
-  Words.find()
-      .then((words) => {
-        res.status(201).json(words);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-      });
-});
-
-// Get a random word
-app.get('/random', (req, res) => {
-  Words.aggregate([{ $sample: { size: 1 } }])
-      .then((random) => {
-        res.status(201).json(random);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-      });
-});
-
-// Add a new word
-app.post('/words', async (req, res) => {
-    let errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
-    }
-    await Words.findOne({ Spelling: req.body.Spelling }) // Search to see if the word already exists in the database
-      .then((word) => {
-        if (word) {
-          //If the word is found, send a response that it already exists
-          return res.status(400).send(req.body.Spelling + ' already exists');
-        } else {
-          Words
-            .create({
-              Spelling: req.body.Spelling
-            })
-            .then((word) => { res.status(201).json(word) })
-            .catch((error) => {
-              console.error(error);
-              res.status(500).send('Error: ' + error);
-            });
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        res.status(500).send('Error: ' + error);
-      });
-  });
 
 // error handling
 app.use((err, req, res, next) => {
