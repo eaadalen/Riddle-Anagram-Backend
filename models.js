@@ -11,8 +11,8 @@ let shortPromptSchema = mongoose.Schema({
   Answer: {type: String, required: true}
 });
 
-let longPrompt = mongoose.model('User', longPromptSchema);
-let shortPrompt = mongoose.model('Word', shortPromptSchema);
+let longPrompt = mongoose.model('longPrompt', longPromptSchema);
+let shortPrompt = mongoose.model('longPrompt', shortPromptSchema);
 
 module.exports.longPrompt = longPrompt;
 module.exports.shortPrompt = shortPrompt;
