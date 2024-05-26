@@ -1,7 +1,7 @@
 {
-  "name": "movie_api",
+  "name": "Riddle-Anagram-Game",
   "version": "1.0.0",
-  "description": "Movie API",
+  "description": "Solve the riddles, unscramble the anagram",
   "main": "index.js",
   "scripts": {
     "test": "N/A",
