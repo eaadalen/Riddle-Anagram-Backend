@@ -5,12 +5,12 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const Models = require('./models.js');
 const { check, validationResult } = require('express-validator');
-const longPrompts = Models.longPrompt;
-const shortPrompts = Models.shortPrompt;
 const app = express();
 const cors = require('cors');
-let allowedOrigins = ['http://localhost:1234'];
 const port = process.env.PORT || 8080;
+let allowedOrigins = ['http://localhost:1234'];
+const longPrompts = Models.longPrompt;
+const shortPrompts = Models.shortPrompt;
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
@@ -25,14 +25,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static('public'));
 app.use(morgan('common'));
-//let auth = require('./auth')(app);
-//const passport = require('passport');
-//require('./passport');
+let auth = require('./auth')(app);
+const passport = require('passport');
+require('./passport');
 
 //mongodb+srv://eaadalen112:sBOkyIz8egCGkUEl@riddle-anagram.uqfipr9.mongodb.net/Riddle-Anagram?retryWrites=true&w=majority&appName=Riddle-Anagram
 
 //mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect("mongodb+srv://eaadalen112:sBOkyIz8egCGkUEl@riddle-anagram.uqfipr9.mongodb.net/Riddle-Anagram?retryWrites=true&w=majority&appName=Riddle-Anagram", { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect("mongodb+srv://eaadalen112:sBOkyIz8egCGkUEl@riddle-anagram.uqfipr9.mongodb.net/?retryWrites=true&w=majority&appName=Riddle-Anagram", { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Greeting message
 app.get('/', (req, res) => {
