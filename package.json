@@ -1,5 +1,5 @@
 {
-  "name": "Riddle-Anagram-Game",
+  "name": "riddle-anagram-game",
   "version": "1.0.0",
   "description": "Solve the riddles, unscramble the anagram",
   "main": "index.js",
@@ -12,8 +12,8 @@
     "url": "yes"
   },
   "keywords": [
-    "movie",
-    "api"
+    "riddle",
+    "anagram"
   ],
   "author": "Erik Aadalen",
   "license": "ISC",
