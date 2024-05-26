@@ -12,7 +12,7 @@ let shortPromptSchema = mongoose.Schema({
 });
 
 let longPrompt = mongoose.model('longPrompt', longPromptSchema);
-let shortPrompt = mongoose.model('longPrompt', shortPromptSchema);
+let shortPrompt = mongoose.model('shortPrompt', shortPromptSchema);
 
 module.exports.longPrompt = longPrompt;
 module.exports.shortPrompt = shortPrompt;
