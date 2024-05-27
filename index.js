@@ -30,7 +30,7 @@ const passport = require('passport');
 require('./passport');
 
 //mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect("mongodb+srv://eaadalen112:wupdWsVvbiZWGqyG@riddle-anagram-game.arpqbez.mongodb.net/Riddle-Anagram-Game?retryWrites=true&w=majority&appName=Riddle-Anagram-Game", { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect("mongodb+srv://eaadalen112:MGgCJUn2dkAI27OH@riddle-anagram-game.qamy8wp.mongodb.net/Riddle-Anagram-Game?retryWrites=true&w=majority&appName=Riddle-Anagram-Game", { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Greeting message
 app.get('/', (req, res) => {
