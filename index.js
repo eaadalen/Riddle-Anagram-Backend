@@ -62,14 +62,17 @@ app.get('/random', (req, res) => {
 
 // Get a short prompt based on the letter of the selected long prompt
 app.get('/spL/:letter', (req, res) => {
-  shortPrompts.findOne({Answer : {$regex : req.params.letter}})
-      .then((prompt) => {
-        res.status(201).json(prompt);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-      });
+  shortPrompts.aggregate([
+    { $match: {Answer : {$regex : req.params.letter}} },
+    { $sample: { size: 1 } }
+  ])
+    .then((prompt) => {
+      res.status(201).json(prompt);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
 });
 
 // Get full list of short prompts
