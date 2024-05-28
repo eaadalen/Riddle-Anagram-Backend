@@ -62,7 +62,7 @@ app.get('/random', (req, res) => {
 
 // Get a short prompt based on the letter of the selected long prompt
 app.get('/spL/:letter', (req, res) => {
-  shortPrompts.findOne({ Answer: req.params.letter })
+  shortPrompts.findOne({Answer : {$regex : req.params.letter}})
       .then((prompt) => {
         res.status(201).json(prompt);
       })
