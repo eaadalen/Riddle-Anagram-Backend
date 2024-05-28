@@ -61,10 +61,10 @@ app.get('/random', (req, res) => {
 });
 
 // Get a short prompt based on the letter of the selected long prompt
-app.get('/sp-L/:letter', (req, res) => {
-  shortPrompts.findOne({"Answer" : {$regex : "A"}});
-      .then((shortPrompts) => {
-        res.status(201).json(shortPrompts);
+app.get('/spL/:letter', (req, res) => {
+  shortPrompts.findOne();
+      .then((spL) => {
+        res.status(201).json(spL);
       })
       .catch((err) => {
         console.error(err);
