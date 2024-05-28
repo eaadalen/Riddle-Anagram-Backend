@@ -48,6 +48,18 @@ app.get('/longprompts', (req, res) => {
       });
 });
 
+// Get a random long prompt
+app.get('/longprompts', (req, res) => {
+  longPrompts.aggregate([{ $sample: { size: 1 } }])
+      .then((random) => {
+        res.status(201).json(random);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      });
+});
+
 // Get full list of short prompts
 app.get('/shortprompts', (req, res) => {
   shortPrompts.find()
