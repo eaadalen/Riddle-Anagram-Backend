@@ -49,7 +49,7 @@ app.get('/longprompts', (req, res) => {
 });
 
 // Get a random long prompt
-app.get('/longprompts', (req, res) => {
+app.get('/random', (req, res) => {
   longPrompts.aggregate([{ $sample: { size: 1 } }])
       .then((random) => {
         res.status(201).json(random);
