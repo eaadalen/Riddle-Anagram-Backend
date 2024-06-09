@@ -62,10 +62,10 @@ app.get('/random', (req, res) => {
 
 // Get a short prompt based on the letters of the selected long prompt
 app.get('/spL/:letters', (req, res) => {
-  let promptResponse = {}
+  let promptResponse = {'hi'}
 
   Array.from(req.params.letters).forEach((element) => {
-    res.send(element)
+    res.send(promptResponse)
     shortPrompts.aggregate([
       { $match: { Answer : { $regex : req.params.letters } } },
       { $sample: { size: 1 } }
