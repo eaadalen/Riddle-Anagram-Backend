@@ -62,7 +62,7 @@ app.get('/random', (req, res) => {
 
 // Get a short prompt based on the letters of the selected long prompt
 app.get('/spL/:letters', (req, res) => {
-  let promptResponse = {'hi'}
+  let promptResponse = {'hi': 'hello'}
 
   Array.from(req.params.letters).forEach((element) => {
     res.send(promptResponse)
