@@ -66,7 +66,7 @@ app.get('/spL/:letters', (req, res) => {
 
   Array.from(req.params.letters).forEach((element) => {
     shortPrompts.aggregate([
-      { $match: { Answer : { $regex : req.params.letters } } },
+      { $match: { Answer : { $regex : element } } },
       { $sample: { size: 1 } }
     ])
     .then((prompt) => {
