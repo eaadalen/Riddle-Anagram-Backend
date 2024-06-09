@@ -79,7 +79,7 @@ app.get('/spL/:letters', (req, res) => {
     });
   })
 
-  res.status(201).json(promptResponse);
+  //res.status(201).json(promptResponse);
 });
 
 // Get full list of short prompts
