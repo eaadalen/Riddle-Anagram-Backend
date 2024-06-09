@@ -28,7 +28,6 @@ app.use(morgan('common'));
 let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
-let promptResponse = {}
 
 mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -63,14 +62,15 @@ app.get('/random', (req, res) => {
 
 // Get a short prompt based on the letters of the selected long prompt
 app.get('/spL/:letters', (req, res) => {
+  let promptResponse = {}
   Array.from(req.params.letters).forEach((element) => {
     shortPrompts.aggregate([
       { $match: { Answer : { $regex : element } } },
       { $sample: { size: 1 } }
     ])
     .then((prompt) => {
-      console.log(element)
-      promptResponse[element] = prompt
+      console.log(prompt.json())
+      promptResponse[String(element)] = prompt.json()
     })
     .catch((err) => {
       console.error(err);
