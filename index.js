@@ -65,13 +65,13 @@ app.get('/spL/:letters', (req, res) => {
   let promptResponse = {}
   promptResponse['start'] = 'here'
   Array.from(req.params.letters).forEach((element) => {
-    let promptResponse = {}
     shortPrompts.aggregate([
       { $match: { Answer : { $regex : element } } },
       { $sample: { size: 1 } }
     ])
     .then((prompt) => {
       promptResponse[String(element)] = 'test'
+      res.status(201).json(prompt);
     })
     .catch((err) => {
       console.error(err);
@@ -79,7 +79,6 @@ app.get('/spL/:letters', (req, res) => {
     });
     console.log(promptResponse)
   })
-  res.status(201).send(promptResponse);
 });
 
 // Get full list of short prompts
