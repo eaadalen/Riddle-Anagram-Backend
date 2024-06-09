@@ -63,21 +63,29 @@ app.get('/random', (req, res) => {
 // Get a short prompt based on the letters of the selected long prompt
 app.get('/spL/:letters', (req, res) => {
   let promptResponse = {}
-  promptResponse['start'] = 'here'
   Array.from(req.params.letters).forEach((element) => {
     shortPrompts.aggregate([
       { $match: { Answer : { $regex : element } } },
       { $sample: { size: 1 } }
     ])
     .then((prompt) => {
-      promptResponse[String(element)] = 'test'
-      res.status(201).json(prompt);
+      promptResponse[prompt[0]._id] = {
+        'shortPrompt': prompt[0].shortPrompt,
+        'Answer': prompt[0].Answer,
+        'activeLetter': prompt[0].Answer.indexOf(element),
+        'activeGuess': '',
+        'maxLength': prompt[0].Answer.length,
+        'locked': false
+      }
+      console.log(Object.keys(promptResponse).length)
+      if (Object.keys(promptResponse).length === req.params.letters.length) {
+        res.status(201).json(promptResponse);
+      }
     })
     .catch((err) => {
       console.error(err);
       res.status(500).send('Error: ' + err);
     });
-    console.log(promptResponse)
   })
 });
 
