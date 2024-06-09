@@ -70,7 +70,7 @@ app.get('/spL/:letters', (req, res) => {
       { $sample: { size: 1 } }
     ])
     .then((prompt) => {
-      res.status(201).json(prompt);
+      console.log(promptResponse)
       promptResponse[element] = prompt
     })
     .catch((err) => {
@@ -79,7 +79,7 @@ app.get('/spL/:letters', (req, res) => {
     });
   })
 
-  //res.status(201).json(promptResponse);
+  res.status(201).json(promptResponse);
 });
 
 // Get full list of short prompts
