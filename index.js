@@ -69,8 +69,8 @@ app.get('/spL/:letters', (req, res) => {
       { $sample: { size: 1 } }
     ])
     .then((prompt) => {
-      console.log(prompt.json())
-      promptResponse[String(element)] = prompt.json()
+      console.log(json(prompt))
+      promptResponse[String(element)] = json(prompt)
     })
     .catch((err) => {
       console.error(err);
