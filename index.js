@@ -70,7 +70,7 @@ app.get('/spL/:letters', (req, res) => {
       { $sample: { size: 1 } }
     ])
     .then((prompt) => {
-      res.send(prompt)
+      res.status(201).send(prompt)
       promptResponse[element] = prompt
     })
     .catch((err) => {
