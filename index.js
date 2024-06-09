@@ -63,7 +63,7 @@ app.get('/random', (req, res) => {
 // Get a short prompt based on the letter of the selected long prompt
 app.get('/spL/:letter', (req, res) => {
   shortPrompts.aggregate([
-    { $match: {Answer : {$regex : req.params.letter}} },
+    { $match: { Answer : { $regex : req.params.letter } } },
     { $sample: { size: 1 } }
   ])
     .then((prompt) => {
