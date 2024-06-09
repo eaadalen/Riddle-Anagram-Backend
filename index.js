@@ -65,12 +65,12 @@ app.get('/spL/:letters', (req, res) => {
   let promptResponse = {'hi': 'hello'}
 
   Array.from(req.params.letters).forEach((element) => {
-    res.send(promptResponse)
     shortPrompts.aggregate([
       { $match: { Answer : { $regex : req.params.letters } } },
       { $sample: { size: 1 } }
     ])
     .then((prompt) => {
+      res.send(prompt)
       promptResponse[element] = prompt
     })
     .catch((err) => {
