@@ -80,7 +80,7 @@ app.get('/spL/:letters', (req, res) => {
   let shuffle = shuffleString(req.params.letters)
   Array.from(shuffle).forEach((element) => {
     shortPrompts.aggregate([
-      { $match: { $and : [{ Answer : 'GREEN'},  { shortPrompt : { $nin: ['test']} }]}},
+      { $match: { $and : [{ Answer : { $regex : element } },  { shortPrompt : { $nin: SPs }}]}},
       { $sample: { size: 1 } }
     ])
     .then((prompt) => {
@@ -93,8 +93,6 @@ app.get('/spL/:letters', (req, res) => {
         'maxLength': prompt[0].Answer.length,
         'locked': false
       }
-      console.log(prompt)
-      console.log(Object.keys(promptResponse).length)
       if (Object.keys(promptResponse).length === shuffle.length) {
         res.status(201).json(promptResponse);
       }
