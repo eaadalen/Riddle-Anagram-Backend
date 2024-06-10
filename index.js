@@ -76,16 +76,18 @@ function shuffleString(data) {
 // Get a short prompt based on the letters of the selected long prompt
 app.get('/spL/:letters', (req, res) => {
   let promptResponse = {}
+  let shortPrompts = []
   let shuffle = shuffleString(req.params.letters)
   Array.from(shuffle).forEach((element) => {
     shortPrompts.aggregate([
       { $match: { Answer : { $regex : element } } },
-      { $match: { _id : { $nin: Object.keys(promptResponse) } } },
+      { $match: { _id : { $nin: shortPrompts } } },
       { $sample: { size: 1 } }
     ])
     .then((prompt) => {
-      console.log(Object.keys(promptResponse))
-      promptResponse[new mongoose.Types.ObjectId(prompt[0]._id)] = {
+      console.log(shortPrompts)
+      shortPrompts.push(prompt[0].shortPrompt)
+      promptResponse[prompt[0]._id] = {
         'shortPrompt': prompt[0].shortPrompt,
         'Answer': prompt[0].Answer,
         'activeLetter': prompt[0].Answer.indexOf(element),
