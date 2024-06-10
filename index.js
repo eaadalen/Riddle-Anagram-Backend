@@ -85,6 +85,7 @@ app.get('/spL/:letters', (req, res) => {
     ])
     .then((prompt) => {
       SPs.push(prompt[0].shortPrompt)
+      console.log(SPs)
       promptResponse[prompt[0]._id] = {
         'shortPrompt': prompt[0].shortPrompt, 
         'Answer': prompt[0].Answer,
