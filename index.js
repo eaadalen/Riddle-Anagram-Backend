@@ -77,6 +77,7 @@ function shuffleString(data) {
 app.get('/spL/:letters', (req, res) => {
   console.log(req.params.letters)
   let promptResponse = {}
+  let temp = null
   let shuffle = shuffleString(req.params.letters)
   Array.from(shuffle).forEach((element) => {
     shortPrompts.aggregate([
@@ -84,15 +85,16 @@ app.get('/spL/:letters', (req, res) => {
       { $sample: { size: 1 } }
     ])
     .then((prompt) => {
-      promptResponse[prompt[0]._id] = {
-        'shortPrompt': prompt[0].shortPrompt,
-        'Answer': prompt[0].Answer,
-        'activeLetter': prompt[0].Answer.indexOf(element),
-        'activeGuess': '',
-        'maxLength': prompt[0].Answer.length,
-        'locked': false
+      if (prompt != temp) {
+        promptResponse[prompt[0]._id] = {
+          'shortPrompt': prompt[0].shortPrompt,
+          'Answer': prompt[0].Answer,
+          'activeLetter': prompt[0].Answer.indexOf(element),
+          'activeGuess': '',
+          'maxLength': prompt[0].Answer.length,
+          'locked': false
+        }
       }
-      console.log(Object.keys(promptResponse).length)
       if (Object.keys(promptResponse).length === req.params.letters.length) {
         res.status(201).json(promptResponse);
       }
