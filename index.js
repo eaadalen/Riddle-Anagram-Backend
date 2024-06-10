@@ -75,13 +75,12 @@ function shuffleString(data) {
 
 // Get a short prompt based on the letters of the selected long prompt
 app.get('/spL/:letters', (req, res) => {
-  console.log(req.params.letters)
   let promptResponse = {}
   let temp = null
   let shuffle = shuffleString(req.params.letters)
-  Array.from(shuffle).forEach((element) => {
+  for (let i = 0; i < shuffle.length; i++) {
     shortPrompts.aggregate([
-      { $match: { Answer : { $regex : element } } },
+      { $match: { Answer : { $regex : shuffle.charAt(i) } } },
       { $sample: { size: 1 } }
     ])
     .then((prompt) => {
@@ -89,13 +88,13 @@ app.get('/spL/:letters', (req, res) => {
         promptResponse[prompt[0]._id] = {
           'shortPrompt': prompt[0].shortPrompt,
           'Answer': prompt[0].Answer,
-          'activeLetter': prompt[0].Answer.indexOf(element),
+          'activeLetter': prompt[0].Answer.indexOf(shuffle.charAt(i)),
           'activeGuess': '',
           'maxLength': prompt[0].Answer.length,
           'locked': false
         }
       }
-      if (Object.keys(promptResponse).length === req.params.letters.length) {
+      if (Object.keys(promptResponse).length === shuffle.length) {
         res.status(201).json(promptResponse);
       }
     })
@@ -103,7 +102,7 @@ app.get('/spL/:letters', (req, res) => {
       console.error(err);
       res.status(500).send('Error: ' + err);
     });
-  })
+  }
 });
 
 // Get full list of short prompts
