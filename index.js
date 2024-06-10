@@ -77,8 +77,9 @@ function shuffleString(data) {
 app.get('/spL/:letters', (req, res) => {
   let promptResponse = {}
   let temp = null
+  let i = 0
   let shuffle = shuffleString(req.params.letters)
-  for (let i = 0; i < shuffle.length; i++) {
+  while (i < shuffle.length) {
     shortPrompts.aggregate([
       { $match: { Answer : { $regex : shuffle.charAt(i) } } },
       { $sample: { size: 1 } }
@@ -95,8 +96,10 @@ app.get('/spL/:letters', (req, res) => {
         'locked': false
       }
       if (temp === Object.keys(promptResponse).length) {
-        i = i - 1
         console.log('here')
+      }
+      else {
+        i = i + 1
       }
       if (Object.keys(promptResponse).length === shuffle.length) {
         res.status(201).json(promptResponse);
