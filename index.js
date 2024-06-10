@@ -94,9 +94,9 @@ app.get('/spL/:letters', (req, res) => {
         'locked': false
       }
       console.log(Object.keys(promptResponse).length)
-      if (Object.keys(promptResponse).length === req.params.letters.length) {
-        res.status(201).json(promptResponse);
-      }
+      //if (Object.keys(promptResponse).length === shuffle.length) {
+        //res.status(201).json(promptResponse);
+      //}
     })
     .catch((err) => {
       console.error(err);
