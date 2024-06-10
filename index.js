@@ -84,8 +84,7 @@ app.get('/spL/:letters', (req, res) => {
       { $sample: { size: 1 } }
     ])
     .then((prompt) => {
-      console.log(Object.keys(promptResponse))
-      promptResponse[mongoose.Types.ObjectId(prompt[0]._id)] = {
+      promptResponse[new mongoose.Types.ObjectId(prompt[0]._id)] = {
         'shortPrompt': prompt[0].shortPrompt,
         'Answer': prompt[0].Answer,
         'activeLetter': prompt[0].Answer.indexOf(element),
