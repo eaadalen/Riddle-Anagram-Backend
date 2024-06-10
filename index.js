@@ -96,6 +96,7 @@ app.get('/spL/:letters', (req, res) => {
       }
       if (temp === Object.keys(promptResponse).length) {
         i = i - 1
+        console.log('here')
       }
       if (Object.keys(promptResponse).length === shuffle.length) {
         res.status(201).json(promptResponse);
