@@ -84,15 +84,17 @@ app.get('/spL/:letters', (req, res) => {
       { $sample: { size: 1 } }
     ])
     .then((prompt) => {
-      if (prompt != temp) {
-        promptResponse[prompt[0]._id] = {
-          'shortPrompt': prompt[0].shortPrompt,
-          'Answer': prompt[0].Answer,
-          'activeLetter': prompt[0].Answer.indexOf(shuffle.charAt(i)),
-          'activeGuess': '',
-          'maxLength': prompt[0].Answer.length,
-          'locked': false
-        }
+      temp = Object.keys(promptResponse).length
+      promptResponse[prompt[0]._id] = {
+        'shortPrompt': prompt[0].shortPrompt,
+        'Answer': prompt[0].Answer,
+        'activeLetter': prompt[0].Answer.indexOf(shuffle.charAt(i)),
+        'activeGuess': '',
+        'maxLength': prompt[0].Answer.length,
+        'locked': false
+      }
+      if (temp === Object.keys(promptResponse).length) {
+        i = i - 1
       }
       if (Object.keys(promptResponse).length === shuffle.length) {
         res.status(201).json(promptResponse);
