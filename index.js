@@ -76,7 +76,7 @@ function shuffleString(data) {
 // Get a short prompt based on the letters of the selected long prompt
 app.get('/spL/:letters', (req, res) => {
   let promptResponse = {}
-  let temp = 0
+  let temp = -1
   let shuffle = shuffleString(req.params.letters)
   for (let i = 0; i < shuffle.length; i++) {
     while (true) {
