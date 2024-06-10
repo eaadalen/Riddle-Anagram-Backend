@@ -60,35 +60,39 @@ app.get('/random', (req, res) => {
       });
 });
 
-function shuffleString(data) {
-  var a = data.split(""),
-      n = a.length;
-
-  for(var i = n - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var tmp = a[i];
-      a[i] = a[j];
-      a[j] = tmp;
-  }
-  return a.join("");
-}
-
 // Get a short prompt based on the letters of the selected long prompt
 app.get('/spL/:letters', (req, res) => {
+  let promptResponse = {}
   let SPs = []
   let shuffle = shuffleString(req.params.letters)
-  Array.from(shuffle).forEach((element) => {
-    console.log(SPs)
+
+  returnPrompts(shuffle, SPs)
+
+  function shuffleString(data) {
+    var a = data.split(""),
+        n = a.length;
+  
+    for(var i = n - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = a[i];
+        a[i] = a[j];
+        a[j] = tmp;
+    }
+    return a.join("");
+  }
+
+  function returnPrompts(letterString, previousSelections) {
+    console.log('Letter string: ' + String(letterString) + '    ' + 'Prompts List: ' + String(previousSelections))
     shortPrompts.aggregate([
-      { $match: { $and : [{ Answer : { $regex : element } },  { shortPrompt : { $nin: SPs }}]}},
+      { $match: { $and : [{ Answer : { $regex : letterString.slice(0, 1) } },  { shortPrompt : { $nin: previousSelections }}]}},
       { $sample: { size: 1 } }
     ])
     .then((prompt) => {
-      SPs.push(prompt[0].shortPrompt)
+      previousSelections.push(prompt[0].shortPrompt)
       promptResponse[prompt[0]._id] = {
         'shortPrompt': prompt[0].shortPrompt, 
         'Answer': prompt[0].Answer,
-        'activeLetter': prompt[0].Answer.indexOf(element),
+        'activeLetter': prompt[0].Answer.indexOf(letterString.slice(0, 1)),
         'activeGuess': '',
         'maxLength': prompt[0].Answer.length,
         'locked': false
@@ -96,12 +100,15 @@ app.get('/spL/:letters', (req, res) => {
       if (Object.keys(promptResponse).length === shuffle.length) {
         res.status(201).json(promptResponse);
       }
+      else {
+        return returnPrompts(letterString.slice(1), previousSelections)
+      }
     })
     .catch((err) => {
       console.error(err);
       res.status(500).send('Error: ' + err);
     });
-  })
+  }
 });
 
 // Get full list of short prompts
