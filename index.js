@@ -75,7 +75,6 @@ function shuffleString(data) {
 
 // Get a short prompt based on the letters of the selected long prompt
 app.get('/spL/:letters', (req, res) => {
-  console.log(req.params.letters)
   let promptResponse = {}
   let temp = 0
   let shuffle = shuffleString(req.params.letters)
@@ -99,6 +98,7 @@ app.get('/spL/:letters', (req, res) => {
         console.error(err);
         res.status(500).send('Error: ' + err);
       });
+      console.log('while')
       if (Object.keys(promptResponse).length > temp) {
         temp = Object.keys(promptResponse).length
         break
