@@ -84,7 +84,6 @@ app.get('/spL/:letters', (req, res) => {
       { $sample: { size: 1 } }
     ])
     .then((prompt) => {
-      console.log(SPs)
       SPs.push(prompt[0].shortPrompt)
       promptResponse[prompt[0]._id] = {
         'shortPrompt': prompt[0].shortPrompt,
@@ -95,6 +94,7 @@ app.get('/spL/:letters', (req, res) => {
         'locked': false
       }
       console.log(Object.keys(promptResponse).length)
+      console.log(SPs)
       if (Object.keys(promptResponse).length === shuffle.length) {
         res.status(201).json(promptResponse);
       }
