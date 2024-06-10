@@ -93,8 +93,8 @@ app.get('/spL/:letters', (req, res) => {
         'maxLength': prompt[0].Answer.length,
         'locked': false
       }
+      console.log(prompt)
       console.log(Object.keys(promptResponse).length)
-      console.log(SPs)
       if (Object.keys(promptResponse).length === shuffle.length) {
         res.status(201).json(promptResponse);
       }
