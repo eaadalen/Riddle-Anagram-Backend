@@ -80,7 +80,7 @@ app.get('/spL/:letters', (req, res) => {
   Array.from(shuffle).forEach((element) => {
     shortPrompts.aggregate([
       { $match: { Answer : 'GREEN' } },
-      { $match: { _id : { $nin: [ '6655463e42f11893dad2fc31', '6654cb3b28e4a85dfbdda4e1' ] } } },
+      { $match: { _id : { $nin: [ '6655463e42f11893dad2fc31', new ObjectId("6654cb3b28e4a85dfbdda4e1") ] } } },
       { $sample: { size: 1 } }
     ])
     .then((prompt) => {
