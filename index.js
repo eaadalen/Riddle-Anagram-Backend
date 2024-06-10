@@ -79,8 +79,8 @@ app.get('/spL/:letters', (req, res) => {
   let shuffle = shuffleString(req.params.letters)
   Array.from(shuffle).forEach((element) => {
     shortPrompts.aggregate([
-      { $match: { Answer : 'GREEN' } },
-      { $match: { shortPrompt : { $nin: [ '6655463e42f11893dad2fc31', 'Red-_____ colorblind' ] } } },
+      { $match: { Answer : { $regex : element } } },
+      { $match: { _id : { $nin: Object.keys(promptResponse) } } },
       { $sample: { size: 1 } }
     ])
     .then((prompt) => {
