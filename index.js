@@ -84,7 +84,7 @@ app.get('/spL/:letters', (req, res) => {
       { $sample: { size: 1 } }
     ])
     .then((prompt) => {
-      console.log(prompt)
+      console.log(Object.keys(promptResponse))
       promptResponse[prompt[0]._id] = {
         'shortPrompt': prompt[0].shortPrompt,
         'Answer': prompt[0].Answer,
