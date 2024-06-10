@@ -80,9 +80,11 @@ app.get('/spL/:letters', (req, res) => {
   Array.from(shuffle).forEach((element) => {
     shortPrompts.aggregate([
       { $match: { Answer : { $regex : element } } },
+      { $match: { _id : '6654caec28e4a85dfbdda4de' } },
       { $sample: { size: 1 } }
     ])
     .then((prompt) => {
+      console.log(prompt)
       promptResponse[prompt[0]._id] = {
         'shortPrompt': prompt[0].shortPrompt,
         'Answer': prompt[0].Answer,
