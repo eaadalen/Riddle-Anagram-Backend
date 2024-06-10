@@ -84,6 +84,7 @@ app.get('/spL/:letters', (req, res) => {
       { $sample: { size: 1 } }
     ])
     .then((prompt) => {
+      console.log(Object.keys(promptResponse))
       promptResponse[new mongoose.Types.ObjectId(prompt[0]._id)] = {
         'shortPrompt': prompt[0].shortPrompt,
         'Answer': prompt[0].Answer,
