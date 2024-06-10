@@ -79,7 +79,7 @@ app.get('/spL/:letters', (req, res) => {
   let SPs = []
   let shuffle = shuffleString(req.params.letters)
   Array.from(shuffle).forEach((element) => {
-    shortPrompts.aggregate([
+    shortPrompts.findOne([
       { $match: { $and : [{ Answer : { $regex : element }},  { shortPrompt : { $nin: SPs }}]}},
       { $sample: { size: 1 } }
     ])
