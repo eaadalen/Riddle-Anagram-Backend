@@ -77,34 +77,38 @@ function shuffleString(data) {
 app.get('/spL/:letters', (req, res) => {
   console.log(req.params.letters)
   let promptResponse = {}
+  let temp = 0
   let shuffle = shuffleString(req.params.letters)
-  for (let i = 0; i < req.params.letters.length; i++) {
-    console.log(req.params.letters.charAt(i))
+  for (let i = 0; i < shuffle.length; i++) {
+    while (true) {
+      shortPrompts.aggregate([
+        { $match: { Answer : { $regex : shuffle.charAt(i) } } },
+        { $sample: { size: 1 } }
+      ])
+      .then((prompt) => {
+        promptResponse[prompt[0]._id] = {
+          'shortPrompt': prompt[0].shortPrompt,
+          'Answer': prompt[0].Answer,
+          'activeLetter': prompt[0].Answer.indexOf(element),
+          'activeGuess': '',
+          'maxLength': prompt[0].Answer.length,
+          'locked': false
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      });
+      if (Object.keys(promptResponse).length > temp) {
+        temp = Object.keys(promptResponse).length
+        break
+      }
+    }
+    console.log(Object.keys(promptResponse).length)
+    if (Object.keys(promptResponse).length === req.params.letters.length) {
+      res.status(201).json(promptResponse);
+    }
   }
-  Array.from(shuffle).forEach((element) => {
-    shortPrompts.aggregate([
-      { $match: { Answer : { $regex : element } } },
-      { $sample: { size: 1 } }
-    ])
-    .then((prompt) => {
-      promptResponse[prompt[0]._id] = {
-        'shortPrompt': prompt[0].shortPrompt,
-        'Answer': prompt[0].Answer,
-        'activeLetter': prompt[0].Answer.indexOf(element),
-        'activeGuess': '',
-        'maxLength': prompt[0].Answer.length,
-        'locked': false
-      }
-      console.log(Object.keys(promptResponse).length)
-      if (Object.keys(promptResponse).length === req.params.letters.length) {
-        res.status(201).json(promptResponse);
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    });
-  })
 });
 
 // Get full list of short prompts
