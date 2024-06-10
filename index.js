@@ -75,12 +75,10 @@ function shuffleString(data) {
 
 // Get a short prompt based on the letters of the selected long prompt
 app.get('/spL/:letters', (req, res) => {
-  let promptResponse = {}
   let SPs = []
   let shuffle = shuffleString(req.params.letters)
   Array.from(shuffle).forEach((element) => {
     console.log(SPs)
-    console.log(promptResponse)
     shortPrompts.aggregate([
       { $match: { $and : [{ Answer : { $regex : element } },  { shortPrompt : { $nin: SPs }}]}},
       { $sample: { size: 1 } }
