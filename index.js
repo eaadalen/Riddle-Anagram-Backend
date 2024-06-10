@@ -80,7 +80,7 @@ app.get('/spL/:letters', (req, res) => {
   Array.from(shuffle).forEach((element) => {
     shortPrompts.aggregate([
       { $match: { Answer : { $regex : element } } },
-      { $match: { _id : '6654caec28e4a85dfbdda4de' } },
+      { $match: { Answer : 'GREEN' } },
       { $sample: { size: 1 } }
     ])
     .then((prompt) => {
@@ -94,9 +94,9 @@ app.get('/spL/:letters', (req, res) => {
         'locked': false
       }
       console.log(Object.keys(promptResponse).length)
-      //if (Object.keys(promptResponse).length === req.params.letters.length) {
-        //res.status(201).json(promptResponse);
-      //}
+      if (Object.keys(promptResponse).length === req.params.letters.length) {
+        res.status(201).json(promptResponse);
+      }
     })
     .catch((err) => {
       console.error(err);
