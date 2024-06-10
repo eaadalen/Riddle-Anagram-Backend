@@ -82,7 +82,6 @@ app.get('/spL/:letters', (req, res) => {
   }
 
   function returnPrompts(letterString, previousSelections) {
-    console.log('Letter string: ' + String(letterString) + '    ' + 'Prompts List: ' + String(previousSelections))
     shortPrompts.aggregate([
       { $match: { $and : [{ Answer : { $regex : letterString.slice(0, 1) } },  { shortPrompt : { $nin: previousSelections }}]}},
       { $sample: { size: 1 } }
