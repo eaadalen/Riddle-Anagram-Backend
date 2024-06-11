@@ -93,7 +93,7 @@ app.get('/spL/:letters', (req, res) => {
         'Answer': prompt[0].Answer,
         'activeLetter': prompt[0].Answer.indexOf(letterString.slice(0, 1)),
         'activeGuess': '',
-        'guessesRemaining': 3,
+        'guessesSubmitted': 0,
         'maxLength': prompt[0].Answer.length,
         'locked': false
       }
