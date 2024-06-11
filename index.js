@@ -51,13 +51,13 @@ app.get('/longprompts', (req, res) => {
 // Get a random long prompt
 app.get('/random', (req, res) => {
   longPrompts.aggregate([{ $sample: { size: 1 } }])
-      .then((random) => {
-        res.status(201).json(random);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-      });
+  .then((random) => {
+    res.status(201).json(random);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
+  });
 });
 
 // Get a short prompt based on the letters of the selected long prompt
@@ -93,6 +93,7 @@ app.get('/spL/:letters', (req, res) => {
         'Answer': prompt[0].Answer,
         'activeLetter': prompt[0].Answer.indexOf(letterString.slice(0, 1)),
         'activeGuess': '',
+        'guessesRemaining': 3,
         'maxLength': prompt[0].Answer.length,
         'locked': false
       }
