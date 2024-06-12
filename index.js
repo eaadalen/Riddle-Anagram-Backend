@@ -8,7 +8,7 @@ const { check, validationResult } = require('express-validator');
 const app = express();
 const cors = require('cors');
 const port = process.env.PORT || 8080;
-let allowedOrigins = ['http://localhost:1234'];
+let allowedOrigins = ['http://localhost:1234', 'https://main--riddle-unscramble.netlify.app/'];
 const longPrompts = Models.longPrompt;
 const shortPrompts = Models.shortPrompt;
 app.use(cors({
