@@ -52,6 +52,7 @@ app.get('/longprompts', (req, res) => {
 app.get('/daily', (req, res) => {
   const currentFullDate = new Date()
   const currentDate = String(currentFullDate.toISOString().split('T')[0])
+  console.log(currentDate)
   longPrompts.aggregate([
     { $match: { Date : currentDate } },
     { $sample: { size: 1 } }
