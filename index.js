@@ -50,8 +50,8 @@ app.get('/longprompts', (req, res) => {
 
 // Get today's long prompt
 app.get('/daily', (req, res) => {
-  const currentDate = new Date();
-  console.log(currentDate)
+  const currentDate = String(new Date())
+  console.log(currentDate.slice(0,9))
   longPrompts.aggregate([
     { $match: { Date : currentDate } },
     { $sample: { size: 1 } }
