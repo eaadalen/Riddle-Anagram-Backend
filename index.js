@@ -48,9 +48,14 @@ app.get('/longprompts', (req, res) => {
       });
 });
 
-// Get a random long prompt
-app.get('/random', (req, res) => {
-  longPrompts.aggregate([{ $sample: { size: 1 } }])
+// Get today's long prompt
+app.get('/daily', (req, res) => {
+  const currentDate = new Date();
+  console.log(currentDate)
+  longPrompts.aggregate([
+    { $match: { Date : currentDate } },
+    { $sample: { size: 1 } }
+  ])
   .then((random) => {
     res.status(201).json(random);
   })
