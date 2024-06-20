@@ -143,7 +143,8 @@ app.post('/longprompt', async (req, res) => {
           longPrompts
             .create({
               longPrompt: req.body.longPrompt,
-              Answer: req.body.Answer
+              Answer: req.body.Answer,
+              Date: req.body.Date
             })
             .then((longPrompt) => { res.status(201).json(longPrompt) })
             .catch((error) => {
