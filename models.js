@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 let longPromptSchema = mongoose.Schema({
   longPrompt: {type: String, required: true},
   Answer: {type: String, required: true},
-  Date: {type: Date, required: true}
+  Date: {type: String, required: true}
 });
 
 let shortPromptSchema = mongoose.Schema({
