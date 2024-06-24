@@ -57,7 +57,6 @@ function addHours(date, hours) {
 // Get today's long prompt
 app.get('/daily', (req, res) => {
   const currentFullDate = addHours(new Date(), 5)
-  console.log(currentFullDate)
   const currentDate = String(currentFullDate.toISOString().split('T')[0])
   longPrompts.aggregate([
     { $match: { Date : currentDate } },
