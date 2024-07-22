@@ -59,6 +59,7 @@ app.get('/daily', (req, res) => {
   const currentFullDate = addHours(new Date(), 5)
   const currentDate = String(currentFullDate.toISOString().split('T')[0])
   longPrompts.aggregate([
+    { $match: { Date : currentDate } },
     { $sample: { size: 1 } }
   ])
   .then((random) => {
